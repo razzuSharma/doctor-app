@@ -33,8 +33,6 @@ const AppointmentForm = ({ onClose, doctor }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
 
-  console.log("see doc name", doctor);
-
   // const firebaseAdd = firebase.firestore().collection("Appointments");
   // const [data, setData] = useState({});
 
@@ -48,8 +46,7 @@ const AppointmentForm = ({ onClose, doctor }) => {
         date: selectedDate,
         doctor: doctor,
       };
-      console.log(newData);
-      Alert.alert("Data Sent");
+      Alert.alert("Appointment Booked Successfully!");
       firebase
         .firestore()
         .collection("Appointments")
@@ -175,7 +172,7 @@ export default AppointmentForm;
 const styles = StyleSheet.create({
   headText: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontFamily: "UbuntuBold",
     marginTop: 20,
     marginBottom: 25,
     marginLeft: 20,
@@ -233,8 +230,8 @@ const styles = StyleSheet.create({
   },
   BookText: {
     color: "white",
-    fontWeight: "bold",
     textAlign: "center",
     fontSize: 16,
+    fontFamily: "UbuntuBold",
   },
 });

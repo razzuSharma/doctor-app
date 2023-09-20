@@ -19,16 +19,8 @@ import { FontAwesome } from "react-native-vector-icons";
 import { useAuth } from "../contexts/AuthContext";
 import { authentication } from "../firebase/config";
 import { signOut } from "firebase/auth";
-import * as Font from "expo-font";
 
 import { firebase } from "../firebase/config";
-import {
-  useFonts,
-  Ubuntu_300Light,
-  Ubuntu_400Regular,
-  Ubuntu_500Medium,
-  Ubuntu_700Bold,
-} from "@expo-google-fonts/ubuntu";
 import { useNavigation } from "@react-navigation/native";
 
 const MyStatusBar = ({ backgroundColor, ...props }) => (
@@ -70,16 +62,6 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     handleDoctorDetails();
   }, []);
-
-  let [fontsLoaded] = useFonts({
-    Ubuntu_300Light,
-
-    Ubuntu_400Regular,
-
-    Ubuntu_500Medium,
-
-    Ubuntu_700Bold,
-  });
 
   const filteredItems = doctorDetails.filter((item) =>
     item.name.toLowerCase().includes(query.toLowerCase())
@@ -125,108 +107,107 @@ const HomeScreen = ({ navigation }) => {
   return (
     <>
       <MyStatusBar backgroundColor="#5E8D48" barStyle="light-content" />
-      <ScrollView>
-        <View style={styles.mainContainer}>
-          <View style={styles.container}>
-            <Text style={{ fontFamily: "Ubuntu_400Regular", fontSize: 24 }}>
-              Hello Gaurav
+      <FlatList
+        data={filteredItems}
+        ListHeaderComponent={
+          <>
+            <View style={styles.container}>
+              <Text style={{ fontSize: 24 }}>Hello There 👋 !</Text>
+              <View style={styles.avatar}>
+                <Image
+                  source={require("../assets/user.jpg")}
+                  style={{ width: 50, height: 50, borderRadius: 25 }}
+                />
+              </View>
+            </View>
+            <View style={styles.searchContainer}>
+              <FontAwesome
+                name="search"
+                size={24}
+                color="black"
+                style={styles.searchIcon}
+              />
+              <TextInput
+                placeholder="Search your doctor"
+                style={styles.inputBox}
+                value={query}
+                onChangeText={(text) => setQuery(text)}
+              />
+              <Icon name="sliders" size={30} color="grey" style={styles.icon} />
+            </View>
+            <View style={styles.row}>
+              <View style={styles.card1}>
+                <Image
+                  source={require("../assets/clinic.png")}
+                  style={styles.cardImage}
+                />
+                <Text style={styles.cardTitle}>Clinic Visit</Text>
+                <Text style={styles.cardDescription}>
+                  Visit your doctor in the clinic
+                </Text>
+              </View>
+              <View style={styles.card}>
+                <Image
+                  source={require("../assets/home.png")}
+                  style={styles.cardImage}
+                />
+                <Text style={styles.cardTitle}>Home Visit</Text>
+                <Text style={styles.cardDescription}>
+                  Schedule a doctor visit at home
+                </Text>
+              </View>
+            </View>
+            <Text
+              style={{
+                fontSize: 24,
+                margin: 10,
+              }}
+            >
+              Services
             </Text>
-            <View style={styles.avatar}>
-              <Image
-                source={require("../assets/user.jpg")}
-                style={{ width: 50, height: 50, borderRadius: 25 }}
+            <View style={{ width: "100%", height: 120 }}>
+              <FlatList
+                horizontal={true}
+                scrollEnabled
+                showsHorizontalScrollIndicator={false}
+                data={categories}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <View style={styles.categoryContainer}>
+                    <TouchableOpacity>
+                      <View
+                        style={[
+                          styles.barCard,
+                          { width: Dimensions.get("window").width / 4 },
+                        ]}
+                      >
+                        <Image
+                          style={styles.categoryImage}
+                          source={item.image}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <Text style={styles.categoryLabel}>{item.label}</Text>
+                  </View>
+                )}
               />
             </View>
-          </View>
-          <View style={styles.searchContainer}>
-            <FontAwesome
-              name="search"
-              size={24}
-              color="black"
-              style={styles.searchIcon}
-            />
-            <TextInput
-              placeholder="Search your doctor"
-              style={styles.inputBox}
-              value={query}
-              onChangeText={(text) => setQuery(text)}
-            />
-            <Icon name="sliders" size={30} color="grey" style={styles.icon} />
-          </View>
-          <View style={styles.row}>
-            <View style={styles.card1}>
-              <Image
-                source={require("../assets/clinic.png")}
-                style={styles.cardImage}
-              />
-              <Text style={styles.cardTitle}>Clinic Visit</Text>
-              <Text style={styles.cardDescription}>
-                Visit your doctor in the clinic
-              </Text>
-            </View>
-            <View style={styles.card}>
-              <Image
-                source={require("../assets/home.png")}
-                style={styles.cardImage}
-              />
-              <Text style={styles.cardTitle}>Home Visit</Text>
-              <Text style={styles.cardDescription}>
-                Schedule a doctor visit at home
-              </Text>
-            </View>
-          </View>
-          <Text
-            style={{
-              fontFamily: "Ubuntu_700Bold",
-              fontSize: 24,
-              margin: 10,
-            }}
-          >
-            Services
-          </Text>
-          <View style={{ width: "100%", height: 120 }}>
-            <FlatList
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={categories}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => (
-                <View style={styles.categoryContainer}>
-                  <TouchableOpacity>
-                    <View
-                      style={[
-                        styles.barCard,
-                        { width: Dimensions.get("window").width / 4 },
-                      ]}
-                    >
-                      <Image style={styles.categoryImage} source={item.image} />
-                    </View>
-                  </TouchableOpacity>
-                  <Text style={styles.categoryLabel}>{item.label}</Text>
-                </View>
-              )}
-            />
-          </View>
 
-          <Text
-            style={{
-              fontFamily: "Ubuntu_700Bold",
-              fontSize: 24,
-              margin: 10,
-            }}
-          >
-            Popular Doctors
-          </Text>
-          <View style={styles.DoctorContainer}>
-            <FlatList
-              data={filteredItems}
-              renderItem={renderCard}
-              keyExtractor={(item) => item.id}
-              numColumns={2}
-            />
-          </View>
-        </View>
-      </ScrollView>
+            <Text
+              style={{
+                fontSize: 24,
+                margin: 10,
+              }}
+            >
+              Popular Doctors
+            </Text>
+          </>
+        }
+        renderItem={renderCard}
+        scrollEnabled
+        keyExtractor={(item) => item.id}
+        numColumns={2}
+      />
     </>
   );
 };
@@ -329,7 +310,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#888",
     textAlign: "center",
-    fontFamily: "Ubuntu_400Regular",
+    fontFamily: "UbuntuMedium",
   },
   row: {
     flexDirection: "row",
@@ -374,14 +355,13 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 16,
-    fontWeight: "bold",
     marginBottom: 5,
-    fontFamily: "Ubuntu_500Medium",
+    fontFamily: "UbuntuBold",
   },
   cardDescription: {
     fontSize: 14,
     textAlign: "center",
-    fontFamily: "Ubuntu_400Regular",
+    fontFamily: "UbuntuRegular",
   },
   DoctorContainer: {
     flex: 1,
@@ -404,13 +384,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
+    fontFamily: "UbuntuBold",
   },
   DoctorDepartment: {
     fontSize: 16,
     marginBottom: 5,
+    fontFamily: "UbuntuMedium",
   },
   DoctorRating: {
     fontSize: 14,
     color: "gray",
+    fontFamily: "UbuntuMedium",
   },
 });

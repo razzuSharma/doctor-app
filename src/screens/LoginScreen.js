@@ -159,12 +159,12 @@ const LoginScreen = ({ navigation }) => {
           </View>
         </View>
 
-        <Text style={styles.downText}>
-          Don't have an account?
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          <Text style={styles.downText}>Don't have an account?</Text>
           <TouchableOpacity onPress={() => navigation.navigate("signup")}>
             <Text style={styles.signup}>Sign Up</Text>
           </TouchableOpacity>
-        </Text>
+        </View>
       </View>
     </>
   );
@@ -180,13 +180,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logo: {
-    marginBottom: 40,
+    marginTop: 20,
   },
   headingLabel: {
     fontSize: 30,
-    fontWeight: "bold",
-    marginBottom: 20,
+    marginVertical: 20,
     color: "#331ece",
+    fontFamily: "UbuntuBold",
   },
   inputView: {
     borderWidth: 1,
@@ -243,10 +243,10 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
-    fontWeight: "bold",
     textAlign: "center",
     fontSize: 16,
     alignSelf: "center",
+    fontFamily: "UbuntuBold",
   },
   forgot: {
     alignSelf: "flex-start",
@@ -254,32 +254,36 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     color: "#331ece",
     fontSize: 16,
-    fontWeight: "500",
+    fontFamily: "UbuntuMedium",
   },
   forgot2: {
     textDecorationLine: "underline",
     color: "#331ece",
     fontSize: 16,
     fontWeight: "500",
+    fontFamily: "UbuntuMedium",
   },
   downText: {
     color: "#331ece",
     fontSize: 16,
-    fontWeight: "400",
     marginTop: 10,
+    textDecorationLine: "underline",
+    fontFamily: "UbuntuMedium",
+    marginRight: 5,
   },
   signup: {
     alignSelf: "flex-start",
-    textDecorationLine: "underline",
     color: "#331ece",
     fontSize: 16,
     fontWeight: "500",
-    paddingTop: 5,
+    fontFamily: "UbuntuMedium",
+    marginTop: 10,
   },
   errorText: {
     fontSize: 16,
     color: "red",
     marginTop: 2,
     marginBottom: 2,
+    fontFamily: "UbuntuMedium",
   },
 });

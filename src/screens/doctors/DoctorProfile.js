@@ -31,14 +31,10 @@ const DoctorProfile = ({ route }) => {
   const { doctorDrillData } = route.params;
   const navigation = useNavigation();
 
-  console.log("testtt", JSON.stringify(doctorDrillData[0], null, 2));
-
   const [myReviews, setMyReviews] = useState([]);
   const fetchReviews = firebase.firestore().collection("reviews");
 
   const Id = doctorDrillData[0]?.id;
-
-  console.log("Id", Id);
 
   const handleFetchReviews = () => {
     setMyReviews([]);
@@ -222,13 +218,13 @@ const styles = StyleSheet.create({
   name: {
     marginTop: 5,
     fontSize: 24,
-    fontWeight: "bold",
     alignSelf: "center",
+    fontFamily: "UbuntuBold",
   },
   dept: {
     fontSize: 18,
-    fontWeight: "w600",
     alignSelf: "center",
+    fontFamily: "UbuntuMedium",
   },
   upperIconsContainer: {
     flexDirection: "row",
@@ -241,12 +237,13 @@ const styles = StyleSheet.create({
   desc: {
     fontSize: 16,
     margin: 10,
+    fontFamily: "UbuntuMedium",
   },
   labelHead: {
     fontSize: 18,
-    fontWeight: "bold",
     marginLeft: 10,
     marginTop: 15,
+    fontFamily: "UbuntuBold",
   },
   add: {
     marginLeft: 280,
@@ -311,16 +308,18 @@ const styles = StyleSheet.create({
   ReviewName: {
     flex: 1,
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "UbuntuBold",
   },
   ReviewRating: {
     fontSize: 16,
     fontWeight: "bold",
     color: "#FFA500",
+    fontFamily: "UbuntuBold",
   },
   ReviewDesc: {
     fontSize: 14,
     textAlign: "justify",
+    fontFamily: "UbuntuMedium",
   },
   BookButton: {
     backgroundColor: "#2557da",
@@ -330,33 +329,33 @@ const styles = StyleSheet.create({
   },
   BookText: {
     color: "white",
-    fontWeight: "bold",
     textAlign: "center",
     fontSize: 16,
+    fontFamily: "UbuntuBold",
   },
   consultation: {
     fontSize: 16,
-    fontWeight: "bold",
     marginLeft: 10,
+    fontFamily: "UbuntuBold",
   },
   fee: {
     color: "green",
     fontSize: 16,
-    fontWeight: "bold",
     marginLeft: 10,
+    fontFamily: "UbuntuBold",
   },
   hospitalsHeading: {
     fontSize: 18,
-    fontWeight: "bold",
     marginLeft: 10,
     marginTop: 15,
+    fontFamily: "UbuntuBold",
   },
   hospitalsList: {
     fontSize: 16,
     marginLeft: 10,
     marginTop: 10,
     color: "#063e77",
-    fontWeight: "w600",
+    fontFamily: "UbuntuMedium",
   },
 });
 

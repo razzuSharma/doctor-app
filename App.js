@@ -11,6 +11,8 @@ import GuestStack from "./src/navigation/GuestStack";
 import AppStack from "./src/navigation/AppStack";
 import AdminStack from "./src/navigation/AdminStack";
 
+import { useFonts } from "expo-font";
+
 const AppContent = () => {
   const { AdminLoggedIn } = useAuth();
   const { loggedInUser } = useAuth();
@@ -29,11 +31,21 @@ const AppContent = () => {
 };
 
 export default function App() {
-  return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
-  );
+  let [fontsLoaded] = useFonts({
+    UbuntuRegular: require("../HealthCareNepal/src/assets/fonts/Ubuntu-Regular.ttf"),
+    UbuntuBold: require("../HealthCareNepal/src/assets/fonts/Ubuntu-Bold.ttf"),
+    UbuntuMedium: require("../HealthCareNepal/src/assets/fonts/Ubuntu-Medium.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  } else {
+    return (
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

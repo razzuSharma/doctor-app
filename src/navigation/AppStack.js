@@ -53,11 +53,11 @@ const AppStack = () => {
         />
 
         <Tab.Screen
-          name="Settings"
+          name="Profile"
           component={SettingScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <MaterialIcons name="settings" size={24} color="#466eda" />
+              <MaterialIcons name="person" size={24} color="#466eda" />
             ),
             headerShown: false,
           }}

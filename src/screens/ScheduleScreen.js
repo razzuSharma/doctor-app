@@ -71,7 +71,7 @@ const ScheduleScreen = () => {
     );
 
     return (
-      <View style={styles.card}>
+      <View key={item.id} style={styles.card}>
         <View style={{ flexDirection: "row" }}>
           <View style={{ flexDirection: "column" }}>
             <Image
@@ -112,7 +112,7 @@ const ScheduleScreen = () => {
       <ScrollView>
         <View style={styles.container}>
           <Text style={styles.title}>Scheduled Appointments</Text>
-          {myData.map((item) => renderAppointmentCard(item))}
+          {myData.map((item) => renderAppointmentCard(item, item.id))}
         </View>
       </ScrollView>
     </>
@@ -126,8 +126,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
     marginBottom: 20,
+    fontFamily: "UbuntuBold",
   },
   card: {
     flexDirection: "column",
@@ -160,23 +160,25 @@ const styles = StyleSheet.create({
   cardText: {
     flex: 1,
     marginLeft: 30,
+    fontFamily: "UbuntuMedium",
   },
   name: {
     fontSize: 18,
-    fontWeight: "bold",
     marginBottom: 10,
     color: "#0B172A",
+    fontFamily: "UbuntuMedium",
   },
   detail: {
     fontSize: 16,
     marginBottom: 5,
     color: "#4F4F4F",
+    fontFamily: "UbuntuRegular",
   },
   doctorName: {
     fontSize: 15,
-    fontWeight: "bold",
     marginTop: 10,
     color: "#0B172A",
+    fontFamily: "UbuntuMedium",
   },
   calendar: {
     justifyContent: "center",

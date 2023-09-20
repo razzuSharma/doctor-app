@@ -156,7 +156,7 @@ const GiveReview = ({ route }) => {
               <FontAwesome
                 name="send"
                 size={20}
-                color="#8ec7cf"
+                color="blue"
                 style={styles.print}
               />
               <Text style={styles.btntext}>submit</Text>
@@ -180,13 +180,14 @@ const styles = StyleSheet.create({
   heading: {
     color: "crimson",
     fontSize: 24,
-    fontWeight: "bold",
+    fontFamily: "UbuntuBold",
     marginBottom: 3,
   },
   formtitletexts: {
     fontSize: 16,
     paddingTop: 10,
     paddingBottom: 10,
+    fontFamily: "UbuntuMedium",
   },
   formtitle: {
     backgroundColor: "white",
@@ -212,9 +213,9 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
   },
   btntext: {
-    fontWeight: "bold",
     fontSize: 16,
-    color: "#8ec7cf",
+    color: "blue",
+    fontFamily: "UbuntuBold",
   },
   dropdownselector: {
     width: "90%",
