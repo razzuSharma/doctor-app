@@ -8,13 +8,13 @@ import "firebase/compat/firestore";
 import "firebase/compat/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDArUDMUPrUnY6BpNOif5C-08Dba4UhPzc",
-  authDomain: "healthcaregrz.firebaseapp.com",
-  projectId: "healthcaregrz",
-  storageBucket: "healthcaregrz.appspot.com",
-  messagingSenderId: "1020051476927",
-  appId: "1:1020051476927:web:242d030aceaa0cb6dd910a",
-  measurementId: "G-NFMSS33NVN",
+  apiKey: "AIzaSyBuzYqeJ6T6WnBO2oi0OCzL5vt1RrK574w",
+  authDomain: "doctorap-a163a.firebaseapp.com",
+  projectId: "doctorap-a163a",
+  storageBucket: "doctorap-a163a.appspot.com",
+  messagingSenderId: "831773389899",
+  appId: "1:831773389899:web:0402c9ffe4801bf9c149ce",
+  measurementId: "G-TJL4DM7EKY",
 };
 
 // Initialize Firebase
@@ -23,3 +23,8 @@ firebase.initializeApp(firebaseConfig);
 const app = initializeApp(firebaseConfig);
 const authentication = getAuth(app);
 export { firebase, authentication };
+
+
+
+// ios = "399353246920-633rv0ng9i34t945dvbf8afth6cm65h7.apps.googleusercontent.com"
+// android = "399353246920-m2aaht1pg4ptof9mglftidg2ldgef37i.apps.googleusercontent.com"

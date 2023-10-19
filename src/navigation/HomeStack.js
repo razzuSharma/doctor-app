@@ -7,6 +7,7 @@ import DoctorProfile from "../screens/doctors/DoctorProfile";
 import GiveReview from "../screens/doctors/GiveReview";
 import ViewReviews from "../screens/doctors/ViewReviews";
 import NewReview from "../screens/doctors/NewReview";
+import EditDoctor from "../component/EditDoctor";
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,11 @@ const HomeStack = () => {
       <Stack.Screen
         name="newReview"
         component={NewReview}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditDoctor"
+        component={EditDoctor}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

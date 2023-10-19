@@ -8,14 +8,14 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
-  TextInput,
   ScrollView,
+  TextInput,
   Dimensions,
-  KeyboardAvoidingView,
+  Pressable,
+  Linking,
+  Modal,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome } from "react-native-vector-icons";
-
 import { useAuth } from "../contexts/AuthContext";
 import { authentication } from "../firebase/config";
 import { signOut } from "firebase/auth";
@@ -32,6 +32,11 @@ const MyStatusBar = ({ backgroundColor, ...props }) => (
 );
 
 const HomeScreen = ({ navigation }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
   const { loggedInUser, setLoggedInUser } = useAuth();
   const signOutUser = () => {
     signOut(authentication)
@@ -64,22 +69,33 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const filteredItems = doctorDetails.filter((item) =>
-    item.name.toLowerCase().includes(query.toLowerCase())
+    item?.name?.toLowerCase()?.includes(query?.toLowerCase())
   );
 
   const categories = [
-    { id: 1, label: "covid-19", image: require("../assets/covid.png") },
-    { id: 2, label: "hospotal", image: require("../assets/hospital.png") },
-    { id: 3, label: "ambulance", image: require("../assets/ambulance.png") },
+    {
+      id: 1,
+      label: "covid-19",
+      image: require("../assets/covid.png"),
+      link: "https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/prevention.html#:~:text=In%20those%20situations%2C%20use%20as,sick%20or%20who%20tested%20positive.",
+    },
+    {
+      id: 2,
+      label: "hospotal",
+      image: require("../assets/hospital.png"),
+      link: "https://ghealth121.com/top_hospitals/nepal/",
+    },
+    {
+      id: 3,
+      label: "Helpline",
+      image: require("../assets/ambulance.png"),
+      link: "https://sherpaexpeditiontrekking.com/page/emergency-numbers-in-nepal",
+    },
     {
       id: 4,
       label: "pills",
       image: require("../assets/pills.png"),
-    },
-    {
-      id: 5,
-      label: "Rehabilitation",
-      image: require("../assets/rehabit.png"),
+      link: "https://www.rxsaver.com/blog/top-50-prescription-drugs-filled",
     },
   ];
 
@@ -114,49 +130,61 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.container}>
               <Text style={{ fontSize: 24 }}>Hello There 👋 !</Text>
               <View style={styles.avatar}>
-                <Image
-                  source={require("../assets/user.jpg")}
-                  style={{ width: 50, height: 50, borderRadius: 25 }}
-                />
+                <TouchableOpacity onPress={signOutUser}>
+                  <Image
+                    source={require("../assets/signout.jpg")}
+                    style={{ width: 40, height: 40, borderRadius: 25 }}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.searchContainer}>
-              <FontAwesome
-                name="search"
-                size={24}
-                color="black"
-                style={styles.searchIcon}
-              />
-              <TextInput
-                placeholder="Search your doctor"
-                style={styles.inputBox}
-                value={query}
-                onChangeText={(text) => setQuery(text)}
-              />
-              <Icon name="sliders" size={30} color="grey" style={styles.icon} />
-            </View>
-            <View style={styles.row}>
-              <View style={styles.card1}>
-                <Image
-                  source={require("../assets/clinic.png")}
-                  style={styles.cardImage}
-                />
-                <Text style={styles.cardTitle}>Clinic Visit</Text>
-                <Text style={styles.cardDescription}>
-                  Visit your doctor in the clinic
-                </Text>
-              </View>
-              <View style={styles.card}>
-                <Image
-                  source={require("../assets/home.png")}
-                  style={styles.cardImage}
-                />
-                <Text style={styles.cardTitle}>Home Visit</Text>
-                <Text style={styles.cardDescription}>
-                  Schedule a doctor visit at home
-                </Text>
-              </View>
-            </View>
+            <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.row}>
+        {/* First Card */}
+        <TouchableOpacity onPress={toggleModal} style={styles.card}>
+          <Image
+            source={require("../assets/clinic.png")}
+            style={styles.cardImage}
+          />
+          <Text style={styles.cardTitle}>Clinic Visit</Text>
+          <Text style={styles.cardDescription}>
+            Visit your doctor in the clinic
+          </Text>
+        </TouchableOpacity>
+
+        {/* Second Card */}
+        <TouchableOpacity onPress={toggleModal} style={styles.card}>
+          <Image
+            source={require("../assets/home.png")}
+            style={styles.cardImage}
+          />
+          <Text style={styles.cardTitle}>Home Visit</Text>
+          <Text style={styles.cardDescription}>
+            Schedule a doctor visit at home
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
+              <FontAwesome name="close" size={20} color="#333" />
+            </TouchableOpacity>
+            <FontAwesome name="smile-o" size={40} color="#FFD700" />
+            <Text style={styles.modalText}>Coming Soon!</Text>
+          </View>
+        </View>
+      </Modal>
+    </ScrollView>
             <Text
               style={{
                 fontSize: 24,
@@ -174,7 +202,11 @@ const HomeScreen = ({ navigation }) => {
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                   <View style={styles.categoryContainer}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Linking.openURL(item?.link);
+                      }}
+                    >
                       <View
                         style={[
                           styles.barCard,
@@ -378,6 +410,7 @@ const styles = StyleSheet.create({
   DoctorImage: {
     width: 100,
     height: 100,
+    borderRadius: 50,
     marginBottom: 10,
   },
   DoctorName: {
@@ -395,5 +428,51 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "gray",
     fontFamily: "UbuntuMedium",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 100,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  closeButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
 });

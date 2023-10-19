@@ -16,8 +16,15 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { authentication } from "../firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuth } from "../contexts/AuthContext";
-
+import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithCredential,
+} from "firebase/auth";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -36,12 +43,30 @@ const LoginScreen = ({ navigation }) => {
   const [error, setError] = React.useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [userInfo, setUserInfo] = useState("");
+
+  const [request, response, promptAync] = Google.useAuthRequest({
+    iosClientId:
+      "399353246920-633rv0ng9i34t945dvbf8afth6cm65h7.apps.googleusercontent.com",
+    androidClientId:
+      "399353246920-m2aaht1pg4ptof9mglftidg2ldgef37i.apps.googleusercontent.com",
+  });
+
   const { setLoggedInUser } = useAuth();
 
   const { setAdminLoggedIn } = useAuth();
 
   const inputRef = React.useRef();
   const passwordRef = React.useRef();
+
+
+  React.useEffect(()=>{
+    if(response?.type == "success"){
+      const {id_token} = response.params
+      const credenttials = GoogleAuthProvider.credential(id_token)
+      signInWithCredential(authentication, credenttials)
+    }
+  },[response])
 
   const handleSignIn = async () => {
     if (email === "admin@gmail.com" && password === "admin123") {
@@ -79,7 +104,7 @@ const LoginScreen = ({ navigation }) => {
             ref={inputRef}
             style={styles.TextInput}
             placeholder="Email"
-            defaultValue="gaurav@gmail.com"
+            defaultValue="test@gmail.come"
             placeholderTextColor="#003f5c"
             onChangeText={(email) => setEmail(email)}
           />
@@ -93,7 +118,7 @@ const LoginScreen = ({ navigation }) => {
             ref={passwordRef}
             style={styles.TextInput}
             placeholder="Password"
-            defaultValue="gaurav123"
+            defaultValue="1234567"
             placeholderTextColor="#003f5c"
             secureTextEntry={!showPassword}
             onChangeText={(password) => setPassword(password)}
@@ -143,11 +168,11 @@ const LoginScreen = ({ navigation }) => {
           <View
             style={StyleSheet.flatten([styles.iconCircle, { marginRight: 20 }])}
           >
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => promptAync()}>
               <Icon name={"google"} size={20} color="#302298" />
             </TouchableOpacity>
           </View>
-          <View
+          {/* <View
             style={StyleSheet.flatten([
               styles.iconCircle,
               { backgroundColor: "#302298" },
@@ -156,7 +181,7 @@ const LoginScreen = ({ navigation }) => {
             <TouchableOpacity onPress={() => alert("chupchap google chala")}>
               <Icon name={"facebook"} size={20} color="white" />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
 
         <View style={{ flex: 1, flexDirection: "row" }}>

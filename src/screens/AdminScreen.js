@@ -15,9 +15,10 @@ import {
 } from "react-native";
 import { firebase } from "../firebase/config";
 import "firebase/storage";
-
+import { FontAwesome } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import { useNavigation } from "@react-navigation/native";
 
 import { useAuth } from "../contexts/AuthContext";
 
@@ -46,6 +47,8 @@ const AdminScreen = () => {
   const { setLoggedInUser } = useAuth();
 
   const { setAdminLoggedIn } = useAuth();
+
+  const navigation = useNavigation();
 
   console.log("image uri", image);
 
@@ -110,9 +113,7 @@ const AdminScreen = () => {
         rating,
         image: imageUrl,
       };
-
       await firebase.firestore().collection("doctors").add(formData);
-
       Alert.alert("Doctor Added");
       // Clear form fields and selected image
       setName("");
@@ -124,6 +125,7 @@ const AdminScreen = () => {
       setFee("");
       setRating("");
       setImage(null);
+      navigation.navigate("DoctorsList");
     } catch (error) {
       alert(error);
     }
@@ -143,6 +145,27 @@ const AdminScreen = () => {
             {" "}
             Welcome To Admin Portal
           </Text>
+          <TouchableOpacity
+            onPress={() => {
+              setAdminLoggedIn(false);
+              setLoggedInUser(false);
+            }}
+            style={{
+              marginVertical: 20,
+              marginBottom: 20,
+            }}
+          >
+            <Text
+              style={{
+                textAlign: "center",
+
+                fontSize: 18,
+                fontWeight: 800,
+              }}
+            >
+              Go to client side
+            </Text>
+          </TouchableOpacity>
           <Text style={styles.label}>Name:</Text>
           <TextInput
             style={styles.input}
@@ -218,35 +241,36 @@ const AdminScreen = () => {
           />
           {/* image */}
           <Text style={styles.label}>Image:</Text>
-          <TouchableOpacity onPress={pickImage}>
-            <Text
-              style={{
-                marginVertical: 10,
-                textDecorationLine: "underline",
-              }}
-            >
-              Pick Image
-            </Text>
+          <TouchableOpacity onPress={pickImage} style={styles.pickImageButton}>
+            <FontAwesome
+              name="image"
+              size={20}
+              color="#fff"
+              style={styles.icon}
+            />
+            <Text style={styles.pickImageText}>Pick Image</Text>
           </TouchableOpacity>
           {image && (
-            <Image
-              source={{ uri: image }}
-              style={{ width: 200, height: 200 }}
-            />
+            <Image source={{ uri: image }} style={styles.imagePreview} />
           )}
+
           <TouchableOpacity
             onPress={uploadImageToFirebase}
             style={{
+              backgroundColor: "#007bff", // Button background color
+              borderRadius: 8, // Button border radius
+              paddingVertical: 12, // Vertical padding
+              paddingHorizontal: 24, // Horizontal padding
               marginVertical: 20,
               marginBottom: 20,
+              alignItems: "center", // Center text horizontally
             }}
           >
             <Text
               style={{
-                textAlign: "center",
-
                 fontSize: 18,
-                fontWeight: 800,
+                fontWeight: "bold", // Use "bold" for the button text
+                color: "#fff", // Text color
               }}
             >
               Add Doctor
@@ -254,23 +278,26 @@ const AdminScreen = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setAdminLoggedIn(false);
-              setLoggedInUser(false);
+              navigation.navigate("DoctorsList");
             }}
             style={{
+              backgroundColor: "#007bff", // Button background color
+              borderRadius: 8, // Button border radius
+              paddingVertical: 12, // Vertical padding
+              paddingHorizontal: 24, // Horizontal padding
               marginVertical: 20,
               marginBottom: 20,
+              alignItems: "center", // Center text horizontally
             }}
           >
             <Text
               style={{
-                textAlign: "center",
-
                 fontSize: 18,
-                fontWeight: 800,
+                fontWeight: "bold", // Use "bold" for the button text
+                color: "#fff", // Text color
               }}
             >
-              Go to clinet side
+              List of Doctor
             </Text>
           </TouchableOpacity>
         </ScrollView>
@@ -296,6 +323,24 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 10,
     paddingHorizontal: 8,
+  },
+  pickImageButton: {
+    backgroundColor: "#007bff",
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    marginVertical: 10,
+    alignItems: "center",
+  },
+  pickImageText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  imagePreview: {
+    width: 200,
+    height: 200,
+    marginTop: 10, // Add some spacing between the "Pick Image" button and the image
   },
 });
 

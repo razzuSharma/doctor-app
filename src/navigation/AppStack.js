@@ -31,11 +31,11 @@ const AppStack = () => {
         />
 
         <Tab.Screen
-          name="messages"
+          name="Health Tips"
           component={MessageScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <MaterialIcons name="message" size={24} color="#466eda" />
+              <MaterialIcons name="explore" size={24} color="#466eda" />
             ),
             headerShown: false,
           }}
