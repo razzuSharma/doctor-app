@@ -18,16 +18,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuth } from "../contexts/AuthContext";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
-import {
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithCredential,
-} from "firebase/auth";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 WebBrowser.maybeCompleteAuthSession();
-
 const MyStatusBar = ({ backgroundColor, ...props }) => (
   <View style={[styles.statusBar, { backgroundColor }]}>
     <SafeAreaView>
@@ -59,14 +51,13 @@ const LoginScreen = ({ navigation }) => {
   const inputRef = React.useRef();
   const passwordRef = React.useRef();
 
-
-  React.useEffect(()=>{
-    if(response?.type == "success"){
-      const {id_token} = response.params
-      const credenttials = GoogleAuthProvider.credential(id_token)
-      signInWithCredential(authentication, credenttials)
+  React.useEffect(() => {
+    if (response?.type == "success") {
+      const { id_token } = response.params;
+      const credenttials = GoogleAuthProvider.credential(id_token);
+      signInWithCredential(authentication, credenttials);
     }
-  },[response])
+  }, [response]);
 
   const handleSignIn = async () => {
     if (email === "admin@gmail.com" && password === "admin123") {
@@ -105,7 +96,7 @@ const LoginScreen = ({ navigation }) => {
             style={styles.TextInput}
             placeholder="Email"
             defaultValue="test@gmail.come"
-            placeholderTextColor="#003f5c"
+            placeholderTextColor="#303030"
             onChangeText={(email) => setEmail(email)}
           />
         </TouchableOpacity>
@@ -119,7 +110,7 @@ const LoginScreen = ({ navigation }) => {
             style={styles.TextInput}
             placeholder="Password"
             defaultValue="1234567"
-            placeholderTextColor="#003f5c"
+            placeholderTextColor="#303030"
             secureTextEntry={!showPassword}
             onChangeText={(password) => setPassword(password)}
           />
@@ -130,14 +121,14 @@ const LoginScreen = ({ navigation }) => {
             <Icon
               name={showPassword ? "eye-slash" : "eye"}
               size={20}
-              color="#777"
+              color="#303030"
             />
           </TouchableOpacity>
         </TouchableOpacity>
         {error && <Text style={styles.errorText}>{error}</Text>}
 
         <TouchableOpacity style={styles.forgot}>
-          <Text style={styles.forgot2}>Forgot Password </Text>
+          <Text style={styles.forgot2}>Forgot Password</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleSignIn} style={styles.button}>
           <Text style={styles.text}>Login</Text>
@@ -154,37 +145,17 @@ const LoginScreen = ({ navigation }) => {
           )}
         </TouchableOpacity>
 
-        <Text
-          style={{
-            margin: 5,
-            color: "#302298",
-            fontSize: 16,
-            fontWeight: "600",
-          }}
-        >
-          or
-        </Text>
-        <View style={{ flexDirection: "row" }}>
-          <View
-            style={StyleSheet.flatten([styles.iconCircle, { marginRight: 20 }])}
+        <Text style={styles.orText}>or</Text>
+        <View style={styles.socialLogin}>
+          <TouchableOpacity
+            style={styles.iconCircle}
+            onPress={() => promptAync()}
           >
-            <TouchableOpacity onPress={() => promptAync()}>
-              <Icon name={"google"} size={20} color="#302298" />
-            </TouchableOpacity>
-          </View>
-          {/* <View
-            style={StyleSheet.flatten([
-              styles.iconCircle,
-              { backgroundColor: "#302298" },
-            ])}
-          >
-            <TouchableOpacity onPress={() => alert("chupchap google chala")}>
-              <Icon name={"facebook"} size={20} color="white" />
-            </TouchableOpacity>
-          </View> */}
+            <Icon name="google" size={20} color="#303030" />
+          </TouchableOpacity>
         </View>
 
-        <View style={{ flex: 1, flexDirection: "row" }}>
+        <View style={styles.signupText}>
           <Text style={styles.downText}>Don't have an account?</Text>
           <TouchableOpacity onPress={() => navigation.navigate("signup")}>
             <Text style={styles.signup}>Sign Up</Text>
@@ -310,5 +281,22 @@ const styles = StyleSheet.create({
     marginTop: 2,
     marginBottom: 2,
     fontFamily: "UbuntuMedium",
+  },
+  orText: {
+    color: "#303030",
+    fontSize: 18,
+    marginVertical: 10,
+    fontFamily: "UbuntuBold",
+  },
+  socialLogin: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  signupText: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 20,
   },
 });

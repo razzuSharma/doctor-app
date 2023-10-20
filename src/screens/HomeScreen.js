@@ -139,52 +139,55 @@ const HomeScreen = ({ navigation }) => {
               </View>
             </View>
             <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.row}>
-        {/* First Card */}
-        <TouchableOpacity onPress={toggleModal} style={styles.card}>
-          <Image
-            source={require("../assets/clinic.png")}
-            style={styles.cardImage}
-          />
-          <Text style={styles.cardTitle}>Clinic Visit</Text>
-          <Text style={styles.cardDescription}>
-            Visit your doctor in the clinic
-          </Text>
-        </TouchableOpacity>
+              <View style={styles.row}>
+                {/* First Card */}
+                <TouchableOpacity onPress={toggleModal} style={styles.card}>
+                  <Image
+                    source={require("../assets/clinic.png")}
+                    style={styles.cardImage}
+                  />
+                  <Text style={styles.cardTitle}>Clinic Visit</Text>
+                  <Text style={styles.cardDescription}>
+                    Visit your doctor in the clinic
+                  </Text>
+                </TouchableOpacity>
 
-        {/* Second Card */}
-        <TouchableOpacity onPress={toggleModal} style={styles.card}>
-          <Image
-            source={require("../assets/home.png")}
-            style={styles.cardImage}
-          />
-          <Text style={styles.cardTitle}>Home Visit</Text>
-          <Text style={styles.cardDescription}>
-            Schedule a doctor visit at home
-          </Text>
-        </TouchableOpacity>
-      </View>
+                {/* Second Card */}
+                <TouchableOpacity onPress={toggleModal} style={styles.card}>
+                  <Image
+                    source={require("../assets/home.png")}
+                    style={styles.cardImage}
+                  />
+                  <Text style={styles.cardTitle}>Home Visit</Text>
+                  <Text style={styles.cardDescription}>
+                    Schedule a doctor visit at home
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-      {/* Modal */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
-              <FontAwesome name="close" size={20} color="#333" />
-            </TouchableOpacity>
-            <FontAwesome name="smile-o" size={40} color="#FFD700" />
-            <Text style={styles.modalText}>Coming Soon!</Text>
-          </View>
-        </View>
-      </Modal>
-    </ScrollView>
+              {/* Modal */}
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <TouchableOpacity
+                      onPress={toggleModal}
+                      style={styles.closeButton}
+                    >
+                      <FontAwesome name="close" size={20} color="#333" />
+                    </TouchableOpacity>
+                    <FontAwesome name="smile-o" size={40} color="#FFD700" />
+                    <Text style={styles.modalText}>Coming Soon!</Text>
+                  </View>
+                </View>
+              </Modal>
+            </ScrollView>
             <Text
               style={{
                 fontSize: 24,
