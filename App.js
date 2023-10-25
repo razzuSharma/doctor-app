@@ -2,7 +2,6 @@ import React from "react";
 import { LogBox, SafeAreaView, StyleSheet, Text, View } from "react-native";
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
-import { StatusBar } from "expo-status-bar";
 
 import { NavigationContainer } from "@react-navigation/native";
 

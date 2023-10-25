@@ -41,6 +41,7 @@ const AdminScreen = () => {
   const [rating, setRating] = useState("");
   const [Latitude, setLatitude] = useState("");
   const [Longitude, setLongitude] = useState("");
+  const [errors, setErrors] = useState({});
 
   const [image, setImage] = useState(null);
 
@@ -63,7 +64,7 @@ const AdminScreen = () => {
 
     console.log(result);
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setImage(result.uri);
     }
   };
@@ -91,7 +92,7 @@ const AdminScreen = () => {
 
       //get imageurl from storager
       const imageUrl = await ref.getDownloadURL();
-
+      handleAddDoctor();
       handleSubmit(imageUrl);
     } catch (error) {
       console.log("errors", error);
@@ -131,6 +132,87 @@ const AdminScreen = () => {
     }
   };
 
+  const validateFields = () => {
+    const fieldErrors = {};
+
+    if (!name) {
+      fieldErrors.name = "Name is required";
+    }
+    if (!id) {
+      fieldErrors.id = "ID is required";
+    }
+    if (!department) {
+      fieldErrors.department = "Department is required";
+    }
+    if (!description) {
+      fieldErrors.description = "Description is required";
+    }
+    if (!hospital1 && !hospital2) {
+      fieldErrors.hospital = "At least one hospital is required";
+    }
+    if (!Latitude) {
+      fieldErrors.Latitude = "Latitude is required";
+    }
+    if (!Longitude) {
+      fieldErrors.Longitude = "Longitude is required";
+    }
+    if (!fee) {
+      fieldErrors.fee = "Fee is required";
+    }
+    if (!rating) {
+      fieldErrors.rating = "Rating is required";
+    }
+
+    setErrors(fieldErrors);
+
+    // Return true if there are no errors
+    return Object.keys(fieldErrors).length === 0;
+  };
+
+  
+
+  
+
+  const handleAddDoctor = () => {
+    const isValid = validateFields();
+
+    if (isValid) {
+      uploadImageToFirebase();
+    } else {
+      // Display an error message for any validation errors
+      let errorMessage = "Please correct the following errors:\n";
+      if (errors.name) {
+        errorMessage += `- ${errors.name}\n`;
+      }
+      if (errors.id) {
+        errorMessage += `- ${errors.id}\n`;
+      }
+      if (errors.department) {
+        errorMessage += `- ${errors.department}\n`;
+      }
+      if (errors.description) {
+        errorMessage += `- ${errors.description}\n`;
+      }
+      if (errors.hospital) {
+        errorMessage += `- ${errors.hospital}\n`;
+      }
+      if (errors.Latitude) {
+        errorMessage += `- ${errors.Latitude}\n`;
+      }
+      if (errors.Longitude) {
+        errorMessage += `- ${errors.Longitude}\n`;
+      }
+      if (errors.fee) {
+        errorMessage += `- ${errors.fee}\n`;
+      }
+      if (errors.rating) {
+        errorMessage += `- ${errors.rating}\n`;
+      }
+
+      Alert.alert("Validation Error", errorMessage);
+    }
+  };
+
   return (
     <>
       <MyStatusBar backgroundColor="#5E8D48" barStyle="light-content" />
@@ -148,7 +230,7 @@ const AdminScreen = () => {
           <TouchableOpacity
             onPress={() => {
               setAdminLoggedIn(false);
-              setLoggedInUser(false);
+              setLoggedInUser(true);
             }}
             style={{
               marginVertical: 20,
@@ -169,28 +251,45 @@ const AdminScreen = () => {
           <Text style={styles.label}>Name:</Text>
           <TextInput
             style={styles.input}
-            onChangeText={(text) => setName(text)}
+            onChangeText={(text) => {
+              setName(text);
+              setErrors({ ...errors, name: "" }); // Clear error when user starts typing
+            }}
             value={name}
+            onBlur={validateFields} // Validate all fields on blur
           />
+          {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
+
           <Text style={styles.label}>Id:</Text>
           <TextInput
             style={styles.input}
             onChangeText={(text) => setId(text)}
             value={id}
+            onBlur={validateFields}
           />
+          {errors.id && <Text style={styles.errorText}>{errors.id}</Text>}
           <Text style={styles.label}>Department:</Text>
           <TextInput
             style={styles.input}
             onChangeText={(text) => setDepartment(text)}
             value={department}
+            onBlur={validateFields}
           />
+          {errors.department && (
+            <Text style={styles.errorText}>{errors.department}</Text>
+          )}
           <Text style={styles.label}>Description:</Text>
           <TextInput
             style={styles.input}
             onChangeText={(text) => setDescription(text)}
             value={description}
+            onBlur={validateFields}
             multiline
           />
+          {errors.description && (
+            <Text style={styles.errorText}>{errors.description}</Text>
+          )}
+
           <Text style={styles.label}>Hospital (Primary):</Text>
           <TextInput
             style={styles.input}
@@ -232,6 +331,7 @@ const AdminScreen = () => {
             onChangeText={(text) => setFee(text)}
             value={fee}
           />
+          {errors.fee && <Text style={styles.errorText}>{errors.fee}</Text>}
           <Text style={styles.label}>Rating:</Text>
           <TextInput
             style={styles.input}
@@ -341,6 +441,11 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginTop: 10, // Add some spacing between the "Pick Image" button and the image
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginTop: 5,
   },
 });
 

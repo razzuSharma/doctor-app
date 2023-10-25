@@ -29,6 +29,7 @@ const MyStatusBar = ({ backgroundColor, ...props }) => (
 
 const DoctorProfile = ({ route }) => {
   const { doctorDrillData } = route.params;
+  console.log("Doctor Drill", doctorDrillData);
   const navigation = useNavigation();
 
   const [myReviews, setMyReviews] = useState([]);
@@ -90,7 +91,6 @@ const DoctorProfile = ({ route }) => {
           <Text style={styles.ReviewName}>{name}</Text>
           <Text style={styles.ReviewRating}>{rating}</Text>
         </View>
-
         <Text style={styles.ReviewDesc}>{review}</Text>
       </View>
     );
@@ -143,30 +143,18 @@ const DoctorProfile = ({ route }) => {
         </View>
         <Text style={styles.labelHead}>About Doctor</Text>
         <Text style={styles.desc}>{doctorDrillData[0].description}</Text>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-          }}
-        >
+        <View style={styles.reviewsHeaderContainer}>
           <Text style={styles.labelHead}>Reviews</Text>
           <TouchableOpacity
+            style={styles.addReviewButton}
             onPress={() => {
               navigation.navigate("giveReview", { Id });
             }}
           >
-            <Image
-              style={styles.add}
-              source={require("../../assets/add1.png")}
-            />
+            <Text style={styles.addReviewButtonText}>Add Review</Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity onPress={() => navigation.navigate("send")}>
-            <Image
-              style={styles.add1}
-              source={require("../../assets/iconsee.png")}
-            />
-          </TouchableOpacity> */}
         </View>
+
         <View style={styles.container}>
           <FlatList
             horizontal={true}
@@ -188,11 +176,15 @@ const DoctorProfile = ({ route }) => {
         <MapView style={styles.map} region={region} />
         <View style={styles.hospitalsContainer}>
           <Text style={styles.hospitalsHeading}>Where can you find me?</Text>
-          <Text style={styles.hospitalsList}>
-            {doctorDrillData[0].hospitals.map(
-              (hospital, index) => `\u2022 ${hospital}\n`
-            )}
-          </Text>
+          {doctorDrillData[0] && doctorDrillData[0].hospitals ? (
+            <Text style={styles.hospitalsList}>
+              {doctorDrillData[0].hospitals.map(
+                (hospital, index) => `\u2022 ${hospital}\n`
+              )}
+            </Text>
+          ) : (
+            <Text style={styles.hospitalsList}>No hospitals found.</Text>
+          )}
         </View>
       </ScrollView>
     </>
@@ -210,7 +202,7 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
-    borderRadius:50,
+    borderRadius: 50,
     resizeMode: "cover",
     justifyContent: "center",
     alignSelf: "center",
@@ -358,6 +350,23 @@ const styles = StyleSheet.create({
     color: "#063e77",
     fontFamily: "UbuntuMedium",
   },
+  addReviewButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    backgroundColor: "#2596be", // Button background color
+    borderRadius: 10,
+    marginLeft: 10, // Add some margin to separate it from the text
+    marginTop: 10,
+    width: 100
+  },
+  addReviewButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontFamily: "UbuntuBold", // Apply your desired font family
+  },
+  
 });
 
 export default DoctorProfile;

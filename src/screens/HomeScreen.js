@@ -196,7 +196,7 @@ const HomeScreen = ({ navigation }) => {
             >
               Services
             </Text>
-            <View style={{ width: "100%", height: 120 }}>
+          <View style={{ width: "100%", height: 120 }}>
               <FlatList
                 horizontal={true}
                 scrollEnabled

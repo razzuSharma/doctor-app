@@ -95,7 +95,7 @@ const LoginScreen = ({ navigation }) => {
             ref={inputRef}
             style={styles.TextInput}
             placeholder="Email"
-            defaultValue="test@gmail.come"
+            defaultValue="admin@gmail.come"
             placeholderTextColor="#303030"
             onChangeText={(email) => setEmail(email)}
           />
@@ -109,7 +109,7 @@ const LoginScreen = ({ navigation }) => {
             ref={passwordRef}
             style={styles.TextInput}
             placeholder="Password"
-            defaultValue="1234567"
+            defaultValue="admin1234"
             placeholderTextColor="#303030"
             secureTextEntry={!showPassword}
             onChangeText={(password) => setPassword(password)}
