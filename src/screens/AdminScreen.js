@@ -44,6 +44,7 @@ const AdminScreen = () => {
   const [Longitude, setLongitude] = useState("");
   const [errors, setErrors] = useState({});
   const [refreshing, setRefreshing] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
 
   const [image, setImage] = useState(null);
 
@@ -325,13 +326,17 @@ const AdminScreen = () => {
             placeholder="Enter alternative hospital you work"
             placeholderTextColor="rgba(0, 0, 0, 0.5)"
           />
-          <Text
-            style={{
-              textDecorationLine: "underline",
-            }}
-          >
-            Give Latitude and Longitude for Doctor's map address
-          </Text>
+          {/* Information icon */}
+          <TouchableOpacity onPress={() => setShowMessage(!showMessage)}>
+            <View style={styles.infoIconCircle}>
+              <Text style={styles.infoIcon}>i</Text>
+            </View>
+          </TouchableOpacity>
+          {showMessage && (
+            <Text style={styles.message}>
+              Give Latitude and Longitude for Doctor's map address
+            </Text>
+          )}
           <Text style={styles.label}>Latitude</Text>
           <TextInput
             style={styles.input}
@@ -341,6 +346,7 @@ const AdminScreen = () => {
             placeholder="Enter your latitude"
             placeholderTextColor="rgba(0, 0, 0, 0.5)"
           />
+
           <Text style={styles.label}>Longitude</Text>
           <TextInput
             style={styles.input}
@@ -495,6 +501,30 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#fff",
+  },
+  infoIconCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 20,
+    backgroundColor: "blue",
+    alignItems: "center",
+    justifyContent: "center",
+    transform: [{ rotate: "45deg" }], // Rotate the circle
+  },
+  infoIcon: {
+    fontSize: 20,
+    color: "white",
+    transform: [{ rotate: "-45deg" }], // Counter-rotate the 'i' inside the circle
+  },
+  message: {
+    backgroundColor: 'red', // Add a semi-transparent background
+    color: 'white', // Set the text color to white
+    padding: 10, // Add some padding
+    borderRadius: 10, // Add rounded corners
+    textAlign: 'center', // Center-align the text
+    fontWeight: 'bold', // Make the text bold
+    fontSize: 16, // Adjust the font size
+    marginVertical: 10, // Add vertical margin to separate it from other elements
   },
 });
 
