@@ -1,12 +1,7 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import AboutScreen from "../screens/AboutScreen";
-import HomeScreen from "../screens/HomeScreen";
-import LoginScreen from "../screens/LoginScreen";
 import MessageScreen from "../screens/MessageScreen";
 import ScheduleScreen from "../screens/ScheduleScreen";
 import SettingScreen from "../screens/SettingScreen";
-import SignUpScreen from "../screens/SignUpScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";

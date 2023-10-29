@@ -60,7 +60,7 @@ const SettingScreen = () => {
 
         <TouchableOpacity
           style={styles.emailButton}
-          onPress={() => openEmail("dawalama@gmail.com")}
+          onPress={() => openEmail("chipmunk.pyc@gmail.com")}
         >
           <FontAwesomeIcon icon={faEnvelope} style={styles.emailIcon} />
           <Text style={styles.emailText}>dipeshbhandari@gmail.com</Text>
