@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   StatusBar,
   SafeAreaView,
+  RefreshControl,
 } from "react-native";
 import { firebase } from "../firebase/config";
 import "firebase/storage";
@@ -42,6 +43,7 @@ const AdminScreen = () => {
   const [Latitude, setLatitude] = useState("");
   const [Longitude, setLongitude] = useState("");
   const [errors, setErrors] = useState({});
+  const [refreshing, setRefreshing] = useState(false);
 
   const [image, setImage] = useState(null);
 
@@ -67,6 +69,15 @@ const AdminScreen = () => {
     if (!result.canceled) {
       setImage(result.uri);
     }
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // Add your refresh logic here, e.g., reload data from the server
+
+    // After refreshing is complete, set refreshing to false
+    setRefreshing(false);
   };
 
   const uploadImageToFirebase = async () => {
@@ -169,10 +180,6 @@ const AdminScreen = () => {
     return Object.keys(fieldErrors).length === 0;
   };
 
-  
-
-  
-
   const handleAddDoctor = () => {
     const isValid = validateFields();
 
@@ -220,7 +227,11 @@ const AdminScreen = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
       >
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <Text
             style={{ textAlign: "center", fontSize: 18, fontWeight: "800" }}
           >
@@ -237,17 +248,17 @@ const AdminScreen = () => {
               marginBottom: 20,
             }}
           >
-            <Text
-              style={{
-                textAlign: "center",
-
-                fontSize: 18,
-                fontWeight: 800,
-              }}
-            >
-              Go to client side
-            </Text>
+            <View style={styles.clientButton}>
+              <FontAwesome
+                name="arrow-left"
+                size={20}
+                color="#fff"
+                style={styles.icon}
+              />
+              <Text style={styles.buttonText}>Go to client side</Text>
+            </View>
           </TouchableOpacity>
+
           <Text style={styles.label}>Name:</Text>
           <TextInput
             style={styles.input}
@@ -256,6 +267,8 @@ const AdminScreen = () => {
               setErrors({ ...errors, name: "" }); // Clear error when user starts typing
             }}
             value={name}
+            placeholder="Enter your name here"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
             onBlur={validateFields} // Validate all fields on blur
           />
           {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
@@ -266,6 +279,8 @@ const AdminScreen = () => {
             onChangeText={(text) => setId(text)}
             value={id}
             onBlur={validateFields}
+            placeholder="Enter your id here"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
           />
           {errors.id && <Text style={styles.errorText}>{errors.id}</Text>}
           <Text style={styles.label}>Department:</Text>
@@ -274,6 +289,8 @@ const AdminScreen = () => {
             onChangeText={(text) => setDepartment(text)}
             value={department}
             onBlur={validateFields}
+            placeholder="Enter your department here"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
           />
           {errors.department && (
             <Text style={styles.errorText}>{errors.department}</Text>
@@ -284,6 +301,8 @@ const AdminScreen = () => {
             onChangeText={(text) => setDescription(text)}
             value={description}
             onBlur={validateFields}
+            placeholder="Enter your description here"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
             multiline
           />
           {errors.description && (
@@ -295,12 +314,16 @@ const AdminScreen = () => {
             style={styles.input}
             onChangeText={(text) => setHospital1(text)}
             value={hospital1}
+            placeholder="Enter primary hospital you work here"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
           />
           <Text style={styles.label}>Hospital (Alternatve):</Text>
           <TextInput
             style={styles.input}
             onChangeText={(text) => setHospital2(text)}
             value={hospital2}
+            placeholder="Enter alternative hospital you work"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
           />
           <Text
             style={{
@@ -315,6 +338,8 @@ const AdminScreen = () => {
             keyboardType="numeric"
             onChangeText={(text) => setLatitude(text)}
             value={Latitude}
+            placeholder="Enter your latitude"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
           />
           <Text style={styles.label}>Longitude</Text>
           <TextInput
@@ -322,6 +347,8 @@ const AdminScreen = () => {
             keyboardType="numeric"
             onChangeText={(text) => setLongitude(text)}
             value={Longitude}
+            placeholder="Enter your latitude"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
           />
 
           <Text style={styles.label}>Fee:</Text>
@@ -330,6 +357,8 @@ const AdminScreen = () => {
             keyboardType="numeric"
             onChangeText={(text) => setFee(text)}
             value={fee}
+            placeholder="Enter your free here"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
           />
           {errors.fee && <Text style={styles.errorText}>{errors.fee}</Text>}
           <Text style={styles.label}>Rating:</Text>
@@ -338,6 +367,8 @@ const AdminScreen = () => {
             keyboardType="numeric"
             onChangeText={(text) => setRating(text)}
             value={rating}
+            placeholder="Give your rating"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
           />
           {/* image */}
           <Text style={styles.label}>Image:</Text>
@@ -446,6 +477,24 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 12,
     marginTop: 5,
+  },
+  clientButton: {
+    backgroundColor: "#007bff",
+    borderRadius: 8,
+    padding: 12,
+    alignItems: "center",
+    flexDirection: "row", // To align the icon and text horizontally
+    width: 200,
+  },
+
+  icon: {
+    marginRight: 10, // Add some spacing between the icon and text
+  },
+
+  buttonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
   },
 });
 
